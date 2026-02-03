@@ -33,4 +33,6 @@ public class Paciente {
     @Enumerated(EnumType.STRING)
     private FilaStatus status;
 
+    private LocalDate dataConclusao;
+
 }

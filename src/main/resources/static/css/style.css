@@ -1,0 +1,84 @@
+/* ===== Layout geral ===== */
+body {
+    background-color: #f8f9fa;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* ===== Cards ===== */
+.card {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+}
+
+/* ===== Títulos ===== */
+header h1 {
+    font-size: 2rem;
+}
+
+header p {
+    font-size: 0.95rem;
+}
+.card h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.card h4 {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* ===== Tabelas ===== */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.styled-table thead th {
+    text-align: left;
+    padding: 8px 6px;
+    font-weight: 600;
+    border-bottom: 2px solid #ced4da;
+    white-space: nowrap;
+}
+
+.styled-table tbody td {
+    padding: 8px 6px;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+}
+
+/* hover suave */
+.styled-table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* ===== Botão concluir ===== */
+.btn-success {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+}
+
+/* ===== Status (cores por seção) ===== */
+.warning {
+    border-left: 6px solid #ffc107;
+}
+
+.danger {
+    border-left: 6px solid #dc3545;
+}
+
+.success {
+    border-left: 6px solid #198754;
+}
+
+/* ===== Formulário ===== */
+form .form-control,
+form .form-select {
+    height: 42px;
+}

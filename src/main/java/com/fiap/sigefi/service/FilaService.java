@@ -1,6 +1,7 @@
 package com.fiap.sigefi.service;
 
 import com.fiap.sigefi.dto.PacienteRequestDTO;
+import com.fiap.sigefi.dto.PacienteSeedDTO;
 import com.fiap.sigefi.entities.FilaStatus;
 import com.fiap.sigefi.entities.Paciente;
 import com.fiap.sigefi.repository.PacienteRepository;
@@ -54,7 +55,29 @@ public class FilaService {
         Paciente paciente = repository.findById(pacienteId)
                 .orElseThrow();
         paciente.setStatus(FilaStatus.CONCLUIDO);
+        paciente.setDataConclusao(LocalDate.now());
         repository.save(paciente);
+    }
+
+    public Paciente inserirPacienteSeed(PacienteSeedDTO dto, FilaStatus status) {
+
+        Paciente paciente = new Paciente();
+        paciente.setNome(dto.nome());
+        paciente.setProcedimento(dto.procedimento());
+        paciente.setAsa(dto.asa());
+
+        paciente.setDataEntradaFila(dto.dataEntradaFila());
+        paciente.setDataEmissaoLA(dto.dataEmissaoLA());
+        paciente.setDataVencimentoLA(dto.dataVencimentoLA());
+
+
+        paciente.setStatus(status);
+
+        if (status == FilaStatus.CONCLUIDO) {
+            paciente.setDataConclusao(dto.dataConclusao());
+        }
+
+        return repository.save(paciente);
     }
 
     public List<Paciente> obterFilaOrdenada() {

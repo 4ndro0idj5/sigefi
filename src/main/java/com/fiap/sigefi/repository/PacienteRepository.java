@@ -15,7 +15,6 @@ public interface PacienteRepository
 
     @Query("""
         SELECT p FROM Paciente p
-        WHERE p.status = 'EM_ESPERA'
         ORDER BY p.dataVencimentoLA ASC, p.dataEntradaFila ASC
     """)
     List<Paciente> filaOrdenada();
