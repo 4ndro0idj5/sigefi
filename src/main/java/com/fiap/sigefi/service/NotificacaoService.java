@@ -13,7 +13,7 @@ public class NotificacaoService {
         System.out.println("Paciente: " + paciente.getNome());
         System.out.println("Procedimento: " + paciente.getProcedimento());
         System.out.println("Vencimento LA: " + paciente.getDataVencimentoLA());
-        System.out.println("Mensagem: LA vencerá em 10 dias.");
+        System.out.println("Mensagem: LA vencerá em menos de 10 dias.");
         System.out.println("-----------------------------------");
     }
 }

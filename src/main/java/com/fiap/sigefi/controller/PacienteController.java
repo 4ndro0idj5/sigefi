@@ -1,9 +1,13 @@
 package com.fiap.sigefi.controller;
 
 import com.fiap.sigefi.dto.PacienteRequestDTO;
+import com.fiap.sigefi.entities.FilaStatus;
 import com.fiap.sigefi.entities.Paciente;
 import com.fiap.sigefi.repository.PacienteRepository;
 import com.fiap.sigefi.service.FilaService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,5 +38,19 @@ public class PacienteController {
     @PostMapping("/{id}/concluir")
     public void concluir(@PathVariable UUID id) {
         filaService.concluirCirurgia(id);
+    }
+
+    @GetMapping("/relatorio")
+    public ResponseEntity<byte[]> gerarRelatorio(
+            @RequestParam FilaStatus status
+    ) throws Exception {
+
+        byte[] arquivo = filaService.gerarRelatorioCsv(status);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=relatorio-" + status + ".csv")
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(arquivo);
     }
 }

@@ -26,11 +26,15 @@
             <span class="status-dot yellow"></span>
             Fila de Espera
         </h2>
+        <a class="btn btn-outline-primary btn-sm"
+           th:href="@{/pacientes/relatorio(status='EM_ESPERA')}">
+            📥 Exportar CSV
+        </a>
 
         <table class="styled-table">
             <thead>
             <tr>
-                <th>#</th>
+                <th>Posição</th>
                 <th>Nome</th>
                 <th>Procedimento</th>
                 <th>ASA</th>
@@ -67,6 +71,11 @@
             LA Vencida
         </h2>
 
+        <a class="btn btn-outline-danger btn-sm"
+           th:href="@{/pacientes/relatorio(status='PERDA_LA')}">
+            📥 Exportar CSV
+        </a>
+
         <table class="styled-table">
             <thead>
             <tr>
@@ -93,6 +102,12 @@
             <span class="status-dot green"></span>
             Cirurgias Concluídas
         </h2>
+
+        <a class="btn btn-outline-success btn-sm"
+           th:href="@{/pacientes/relatorio(status='CONCLUIDO')}">
+            📥 Exportar CSV
+        </a>
+
 
         <table class="styled-table">
             <thead>

@@ -20,8 +20,8 @@ public class MonitoramentoLAService {
         this.notificacaoService = notificacaoService;
     }
 
-    // Executa 1x por dia (09:00)
-    @Scheduled(cron = "0 41 17 * * *")
+
+    @Scheduled(cron = "*/30 * * * * *")
     public void verificarLA() {
 
         LocalDate hoje = LocalDate.now();

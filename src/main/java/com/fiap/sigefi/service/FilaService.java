@@ -7,6 +7,7 @@ import com.fiap.sigefi.entities.Paciente;
 import com.fiap.sigefi.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -83,5 +84,55 @@ public class FilaService {
     public List<Paciente> obterFilaOrdenada() {
         return repository.filaOrdenada();
     }
+
+    public byte[] gerarRelatorioCsv(FilaStatus status) {
+
+        List<Paciente> pacientes = repository
+                .findByStatus(status);
+
+        StringBuilder csv = new StringBuilder();
+
+        if (status == FilaStatus.EM_ESPERA) {
+
+            csv.append("Posição,Nome,Procedimento,ASA,Entrada na Fila,Vencimento LA\n");
+
+            int posicao = 1;
+
+            for (Paciente p : pacientes) {
+                csv.append(posicao++).append(",")
+                        .append(p.getNome()).append(",")
+                        .append(p.getProcedimento()).append(",")
+                        .append(p.getAsa()).append(",")
+                        .append(p.getDataEntradaFila()).append(",")
+                        .append(p.getDataVencimentoLA()).append("\n");
+            }
+
+        } else if (status == FilaStatus.PERDA_LA) {
+
+            csv.append("Nome,Procedimento,ASA,Vencimento LA\n");
+
+            for (Paciente p : pacientes) {
+                csv.append(p.getNome()).append(",")
+                        .append(p.getProcedimento()).append(",")
+                        .append(p.getAsa()).append(",")
+                        .append(p.getDataVencimentoLA()).append("\n");
+            }
+
+        } else if (status == FilaStatus.CONCLUIDO) {
+
+            csv.append("Nome,Procedimento,ASA,Entrada na Fila,Data Conclusão\n");
+
+            for (Paciente p : pacientes) {
+                csv.append(p.getNome()).append(",")
+                        .append(p.getProcedimento()).append(",")
+                        .append(p.getAsa()).append(",")
+                        .append(p.getDataEntradaFila()).append(",")
+                        .append(p.getDataConclusao()).append("\n");
+            }
+        }
+
+        return csv.toString().getBytes(StandardCharsets.UTF_8);
+    }
 }
+
 
