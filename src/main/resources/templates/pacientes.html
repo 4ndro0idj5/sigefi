@@ -26,10 +26,12 @@
             <span class="status-dot yellow"></span>
             Fila de Espera
         </h2>
-        <a class="btn btn-outline-primary btn-sm"
-           th:href="@{/pacientes/relatorio(status='EM_ESPERA')}">
-            📥 Exportar CSV
-        </a>
+        <div th:if="${perfil.name() == 'GESTOR'}" class="mb-3">
+            <a href="/pacientes/relatorio?status=EM_ESPERA"
+               class="btn btn-outline-primary">
+                📊 Exportar relatório
+            </a>
+        </div>
 
         <table class="styled-table">
             <thead>
@@ -40,7 +42,7 @@
                 <th>ASA</th>
                 <th>Entrada na Fila</th>
                 <th>Vencimento LA</th>
-                <th>Ação</th>
+                <th th:if="${perfil.name() == 'ADMINISTRATIVO'}">Ação</th>
             </tr>
             </thead>
             <tbody>
@@ -49,14 +51,11 @@
                 <td th:text="${paciente.nome}"></td>
                 <td th:text="${paciente.procedimento}"></td>
                 <td th:text="${paciente.asa}"></td>
-                <td th:text="${paciente.dataEntradaFila}"></td>
-                <td th:text="${paciente.dataVencimentoLA}"></td>
-                <td>
-                    <form th:action="@{/pacientes/{id}/concluir(id=${paciente.id})}"
-                          method="post">
-                        <button type="submit" class="btn btn-success btn-sm">
-                            Concluir
-                        </button>
+                <td th:text="${#temporals.format(paciente.dataEntradaFila, 'dd-MM-yyyy')}"></td>
+                <td th:text="${#temporals.format(paciente.dataVencimentoLA, 'dd-MM-yyyy')}"></td>
+                <td th:if="${perfil.name() == 'ADMINISTRATIVO'}">
+                    <form th:action="@{/pacientes/{id}/concluir(id=${paciente.id},perfil=${perfil})}" method="post">
+                        <button class="btn btn-success btn-sm">Concluir</button>
                     </form>
                 </td>
             </tr>
@@ -71,10 +70,13 @@
             LA Vencida
         </h2>
 
-        <a class="btn btn-outline-danger btn-sm"
-           th:href="@{/pacientes/relatorio(status='PERDA_LA')}">
-            📥 Exportar CSV
-        </a>
+
+        <div th:if="${perfil.name() == 'GESTOR'}" class="mb-3">
+            <a href="/pacientes/relatorio?status=PERDA_LA"
+               class="btn btn-outline-primary">
+                📊 Exportar relatório
+            </a>
+        </div>
 
         <table class="styled-table">
             <thead>
@@ -90,7 +92,7 @@
                 <td th:text="${paciente.nome}"></td>
                 <td th:text="${paciente.procedimento}"></td>
                 <td th:text="${paciente.asa}"></td>
-                <td th:text="${paciente.dataVencimentoLA}"></td>
+                <td th:text="${#temporals.format(paciente.dataVencimentoLA, 'dd-MM-yyyy')}"></td>
             </tr>
             </tbody>
         </table>
@@ -103,10 +105,13 @@
             Cirurgias Concluídas
         </h2>
 
-        <a class="btn btn-outline-success btn-sm"
-           th:href="@{/pacientes/relatorio(status='CONCLUIDO')}">
-            📥 Exportar CSV
-        </a>
+
+        <div th:if="${perfil.name() == 'GESTOR'}" class="mb-3">
+            <a href="/pacientes/relatorio?status=CONCLUIDO"
+               class="btn btn-outline-primary">
+                📊 Exportar relatório
+            </a>
+        </div>
 
 
         <table class="styled-table">
@@ -124,18 +129,20 @@
                 <td th:text="${paciente.nome}"></td>
                 <td th:text="${paciente.procedimento}"></td>
                 <td th:text="${paciente.asa}"></td>
-                <td th:text="${paciente.dataEntradaFila}"></td>
-                <td th:text="${paciente.dataConclusao}"></td>
+                <td th:text="${#temporals.format(paciente.dataEntradaFila, 'dd-MM-yyyy')}"></td>
+                <td th:text="${#temporals.format(paciente.dataConclusao, 'dd-MM-yyyy')}"></td>
             </tr>
             </tbody>
         </table>
     </section>
 
     <!-- ➕ Cadastro -->
-    <section class="card">
-        <h4>Cadastrar Paciente</h4>
+    <div th:if="${perfil.name() == 'ADMINISTRATIVO'}">
 
-        <form th:action="@{/pacientes/cadastro}" method="post" class="row g-3 mt-2">
+        <h4 class="mt-4">Cadastrar Paciente</h4>
+
+        <form th:action="@{/pacientes/cadastro(perfil=${perfil})}" method="post" class="row g-3">
+
             <div class="col-md-4">
                 <input class="form-control" name="nome" placeholder="Nome" required>
             </div>
@@ -156,11 +163,12 @@
 
             <div class="col-md-2">
                 <button class="btn btn-primary w-100">
-                    Cadastrar
+                    ➕ Cadastrar
                 </button>
             </div>
+
         </form>
-    </section>
+    </div>
 
 </div>
 </body>

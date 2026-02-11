@@ -39,6 +39,19 @@ public class DataLoader {
                     FilaStatus.EM_ESPERA
             );
 
+            filaService.inserirPacienteSeed(
+                    new PacienteSeedDTO(
+                            "Ronaldo Silva",
+                            "Cirugia Córnea",
+                            AsaClassificacao.ASA_II,
+                            hoje.minusDays(30),
+                            hoje.minusDays(30),
+                            hoje.plusDays(300),
+                            null
+                    ),
+                    FilaStatus.EM_ESPERA
+            );
+
 
             filaService.inserirPacienteSeed(
                     new PacienteSeedDTO(

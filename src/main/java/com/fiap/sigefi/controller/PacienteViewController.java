@@ -4,17 +4,18 @@ import com.fiap.sigefi.dto.PacienteRequestDTO;
 import com.fiap.sigefi.entities.AsaClassificacao;
 import com.fiap.sigefi.entities.FilaStatus;
 import com.fiap.sigefi.entities.Paciente;
+import com.fiap.sigefi.entities.PerfilUsuario;
 import com.fiap.sigefi.service.FilaService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ public class PacienteViewController {
     }
 
     @GetMapping
-    public String listar(Model model) {
+    public String listar(@RequestParam(defaultValue = "MEDICO") PerfilUsuario perfil, Model model) {
 
         List<Paciente> fila = filaService.obterFilaOrdenada();
 
@@ -51,23 +52,44 @@ public class PacienteViewController {
 
         model.addAttribute("asas", AsaClassificacao.values());
 
+        model.addAttribute("perfil", perfil);
+
 
         return "pacientes";
     }
 
     @PostMapping("/cadastro")
-    public String cadastrar(PacienteRequestDTO dto) {
+    public String cadastrar(
+            PacienteRequestDTO dto,
+            @RequestParam PerfilUsuario perfil) {
+
+        if (perfil != PerfilUsuario.ADMINISTRATIVO) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         filaService.inserirPaciente(dto);
-        return "redirect:/pacientes";
+        return "redirect:/pacientes?perfil=" + perfil;
     }
 
+
     @PostMapping("/{id}/concluir")
-    public String concluir(@PathVariable UUID id) {
+    public String concluir(
+            @PathVariable UUID id,
+            @RequestParam PerfilUsuario perfil) {
+
+        if (perfil != PerfilUsuario.ADMINISTRATIVO) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         filaService.concluirCirurgia(id);
-        return "redirect:/pacientes";
+        return "redirect:/pacientes?perfil=" + perfil;
     }
+
     @GetMapping("/relatorio")
-    public ResponseEntity<byte[]> gerarRelatorio(@RequestParam FilaStatus status) {
+    public ResponseEntity<byte[]> gerarRelatorio(
+            @RequestParam FilaStatus status) {
+
+
 
         byte[] csv = filaService.gerarRelatorioCsv(status);
 
@@ -77,4 +99,5 @@ public class PacienteViewController {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(csv);
     }
+
 }
