@@ -21,7 +21,7 @@ public class MonitoramentoLAService {
     }
 
 
-    @Scheduled(cron = "*/30 * * * * *")
+    @Scheduled(cron = "*/60 * * * * *")
     public void verificarLA() {
 
         LocalDate hoje = LocalDate.now();
@@ -35,5 +35,10 @@ public class MonitoramentoLAService {
                 .filter(p -> !p.getDataVencimentoLA().isBefore(hoje))
                 .filter(p -> !p.getDataVencimentoLA().isAfter(limite))
                 .forEach(notificacaoService::enviarAlertaLA);
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void verificarLaVencido() {
+        filaService.atualizarStatusLaVencido();
     }
 }

@@ -5,6 +5,7 @@ import com.fiap.sigefi.dto.PacienteSeedDTO;
 import com.fiap.sigefi.entities.FilaStatus;
 import com.fiap.sigefi.entities.Paciente;
 import com.fiap.sigefi.repository.PacienteRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -132,6 +133,23 @@ public class FilaService {
         }
 
         return csv.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
+
+    @Transactional
+    public void atualizarStatusLaVencido() {
+        LocalDate hoje = LocalDate.now();
+
+        List<Paciente> pacientes = repository
+                .findByStatus(FilaStatus.EM_ESPERA);
+
+        for (Paciente paciente : pacientes) {
+            if (paciente.getDataVencimentoLA().isBefore(hoje)) {
+                paciente.setStatus(FilaStatus.PERDA_LA);
+            }
+        }
+
+        repository.saveAll(pacientes);
     }
 }
 
