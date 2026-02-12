@@ -1,6 +1,6 @@
 # 🏥 Sistema Inteligente de Gestão de Fila Cirúrgica
 
-Plataforma desenvolvida para automatizar, priorizar e acompanhar filas de cirurgias eletivas no contexto do SUS, utilizando critérios clínicos baseados na **Classificação da Sociedade Americana de Anestesiologia** e na validade do **Laudo de Autorização**, além de controle por perfis de usuário.
+Plataforma desenvolvida para automatizar, priorizar e acompanhar filas de cirurgias eletivas no contexto do SUS, utilizando critérios clínicos baseados na **Classificação da Sociedade Americana de Anestesiologia** e na validade do **Laudo Anestésico**, além de controle por perfis de usuário.
 
 O sistema substitui processos manuais (planilhas e agendas) por uma solução digital orientada por dados, promovendo transparência, eficiência operacional e apoio à tomada de decisão.
 
@@ -12,7 +12,7 @@ O sistema substitui processos manuais (planilhas e agendas) por uma solução di
 
 - Cadastro de pacientes na fila
 - Priorização automática baseada em:
-    - Data de vencimento do Laudo de Autorização
+    - Data de vencimento do Laudo Anestésico
     - Data de entrada na fila
 - Classificação clínica pela Sociedade Americana de Anestesiologia (ASA I, II e III)
 - Visualização da fila ordenada em tempo real
@@ -43,13 +43,13 @@ O sistema opera com três perfis distintos:
 
 ### ⏰ Monitoramento Automático
 
-Um scheduler diário verifica pacientes com **Laudo de Autorização vencido** e atualiza automaticamente o status para `PERDA_LA`, reduzindo desperdício de vagas cirúrgicas.
+Um scheduler diário verifica pacientes com **Laudo Anestésico vencido** e atualiza automaticamente o status para `PERDA_LA`, reduzindo desperdício de vagas cirúrgicas.
 
 ---
 
 ## 🧠 Regras de Negócio
 
-### Validade do Laudo de Autorização por Classificação ASA
+### Validade do Laudo de Anestésico por Classificação ASA
 
 | Classificação da Sociedade Americana de Anestesiologia | Validade |
 |--------------------------------------------------------|----------|
@@ -59,7 +59,7 @@ Um scheduler diário verifica pacientes com **Laudo de Autorização vencido** e
 
 A fila é ordenada por:
 
-1. Data de vencimento do Laudo de Autorização
+1. Data de vencimento do Laudo Anestésico
 2. Data de entrada na fila
 
 ---
